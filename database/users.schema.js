@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const model = mongoose.model;
 
-const UserSchema = new Schema({
-    person: {
-    personId: String,
-    lastLogin: Date,
-    online: true
+const usersSchema = new Schema({
+    firstName: {
+        type: String,
+        required: true,
+        minLength: 3,
+        maxLength: 50
     },
-    name: {
-        firstName: String,
-        lastName: String,
+    lastName: {
         type: String,
         required: true,
         minLength: 3,
@@ -29,3 +29,5 @@ const UserSchema = new Schema({
         maxLength: 30
     }
 });
+
+module.exports = model('users', usersSchema);
