@@ -67,13 +67,23 @@ module.exports = router
     .post(
         '/signin',
         passport.authenticate('local', { failureRedirect: '/signin' }),
-        function (request, response) {
-            response.redirect('/rooms');
+        async function (request, response) {
+            try {
+                const result = await UsersSchema.updateOne(
+                    { _id: request.user.id },
+                    { lastLoginDate: Date.now() },
+                    { multi: false }
+                );
+                console.log(result);
+                response.redirect('/rooms');
+            } catch (error) {
+                response.send(error);
+            }
         }
     )
     .post('/logout', async (request, response) => {
         try {
-            req.logout();
+            request.logout();
             response.redirect('/signin');
         } catch (error) {
             console.error(error);

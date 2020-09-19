@@ -7,19 +7,20 @@ const passport = require('passport');
 const path = require('path');
 
 const exphbs = require('express-handlebars');
-
+const FileStore = require('session-file-store')(session);
 const database = require('./database');
 const apiRouter = require('./api');
 const views = require('./views');
 
 const sessionSettings = {
+    store: new FileStore({}),
     secret: 'keyboard cat',
     resave: true,
     saveUninitialized: true,
     cookie: {},
 };
 
-var handlebars = exphbs.create({
+const handlebars = exphbs.create({
     layoutsDir: path.join(__dirname, '/views/layouts'),
     partialsDir: path.join(__dirname, '/views/partials'),
     defaultLayout: 'layout',
@@ -42,6 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 database();
 
+app.use('/static', express.static(path.join(__dirname, 'views/assets')));
 app.use(apiRouter);
 app.use(views);
 

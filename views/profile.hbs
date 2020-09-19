@@ -1,0 +1,114 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/js/fileinput.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.2/css/fileinput.min.css" media="all"
+    rel="stylesheet" type="text/css" />
+
+<style>
+    .kv-avatar .krajee-default.file-preview-frame,
+    .kv-avatar .krajee-default.file-preview-frame:hover {
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        text-align: center;
+    }
+
+    .kv-avatar {
+        display: inline-block;
+    }
+
+    .kv-avatar .file-input {
+        display: table-cell;
+        width: 200px;
+    }
+
+    .kv-reqd {
+        color: red;
+        font-family: monospace;
+        font-weight: normal;
+    }
+
+    .kv-avatar-hint {
+        margin: 10px 0;
+    }
+
+    .download {
+        margin-left: 20px;
+    }
+</style>
+
+<!-- markup -->
+<!-- note: your server code `/site/avatar_upload/2` will receive `$_FILES['avatar-2']` on form submission -->
+<!-- the avatar markup -->
+<div id="kv-avatar-errors-2" class="center-block" style="width:800px;display:none"></div>
+
+<div class="row" style="padding-top:20px;">
+    <form class="form form-vertical col-sm-6" action="/api/profile/avatar" method="post" enctype="multipart/form-data">
+        <div class="col-sm-12 text-center">
+            <div class="kv-avatar">
+                <div class="file-loading">
+                    <input id="avatar-2" name="avatar" type="file" required>
+                </div>
+            </div>
+            <div class="kv-avatar-hint">
+                <small>Select file < 1500 KB</small>
+                        <button type="submit" class="btn btn-primary download">Download</button>
+            </div>
+        </div>
+    </form>
+    <form class="form form-vertical col-sm-6" action="/api/profile" method="post" enctype="multipart/form-data">
+        <div class="col-sm-10">
+            <div class="col-sm-10">
+                <div class="form-group">
+                    <label for="email">Email Address<span class="kv-reqd">*</span></label>
+                    <input type="email" class="form-control" name="email" value="{{user.email}}">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password<span class="kv-reqd">*</span></label>
+                    <input type="password" class="form-control" name="pwd">
+                </div>
+            </div>
+
+            <div class="col-sm-10">
+                <div class="form-group">
+                    <label for="fname">First Name</label>
+                    <input type="text" class="form-control" name="firstName" required value="{{user.firstName}}">
+                </div>
+
+                <div class="form-group">
+                    <label for="lname">Last Name</label>
+                    <input type="text" class="form-control" name="lastName" required value="{{user.lastName}}">
+                </div>
+                <div class="form-group">
+                    <hr>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+
+
+<!-- the fileinput plugin initialization -->
+<script>
+
+    $("#avatar-2").fileinput({
+        overwriteInitial: true,
+        maxFileSize: 1500,
+        showClose: false,
+        showCaption: false,
+        showBrowse: false,
+        browseOnZoneClick: true,
+        removeLabel: '',
+        removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
+        removeTitle: 'Cancel or reset changes',
+        elErrorContainer: '#kv-avatar-errors-2',
+        msgErrorClass: 'alert alert-block alert-danger',
+        defaultPreviewContent: '<img src="/api/profile/avatar" style="max-width:200px" alt="Your Avatar"><h6 class="text-muted">Click to select</h6>',
+        layoutTemplates: { main2: '{preview} ' + ' {remove} {browse}' },
+        allowedFileExtensions: ["jpg", "png", "gif"]
+    });
+</script>

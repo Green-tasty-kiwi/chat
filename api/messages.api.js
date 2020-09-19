@@ -1,50 +1,19 @@
 const express = require('express');
 
 const router = express.Router();
-const MessagesSchema = require('../database/messages.schema');
+
+const findOneMessageController = require('../controllers/index')
+    .findOneMessageController;
+
+const findAllMessageController = require('../controllers/index')
+    .findAllMessageController;
+
+const postMessageController = require('../controllers/index')
+    .postMessageController;
 
 module.exports = router
-    .get('/', async (request, response, next) => {
-        try {
-            const messages = await MessagesSchema.find()
-                .populate('receiver', ['firstName', 'lastName'])
-                .populate('sender', ['firstName', 'lastName']);
-            response.send(messages);
-        } catch (error) {
-            console.error(error);
-            response.send('error');
-        }
-    })
-    .get('/:id', async (request, response, next) => {
-        let messageId = request.params.id;
-        try {
-            const message = await MessagesSchema.findById(messageId);
-            response.send(message);
-        } catch (error) {
-            console.error(error);
-            response.send('error');
-        }
-    })
-    .post('/', async (request, response, next) => {
-        const senderId = request.session.passport.user;
-        const text = request.body.text;
+    .get('/', findAllMessageController)
 
-        try {
-            if (!senderId) {
-                response.send('SENDER');
-            }
-            let message = await MessagesSchema.create({
-                text: text,
-                sender: senderId,
-            });
+    .get('/:id', findOneMessageController)
 
-            message = await MessagesSchema.findById(
-                message._id
-            ).populate('sender', ['firstName', 'lastName']);
-
-            response.send(message);
-        } catch (error) {
-            console.error(error);
-            response.send(error);
-        }
-    });
+    .post('/', postMessageController);

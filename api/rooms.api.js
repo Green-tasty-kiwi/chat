@@ -56,10 +56,16 @@ module.exports = router
     })
     .post('/', async (request, response, next) => {
         const body = request.body;
+        console.log(body);
         try {
             const room = await RoomsSchema.create({
                 name: body.name,
+                description: body.description,
+                subject: body.subjectId,
             });
+            room = await RoomsSchema.findById(room._id).populate('subject', [
+                'name',
+            ]);
             response.send(room);
         } catch (error) {
             console.log(error);
