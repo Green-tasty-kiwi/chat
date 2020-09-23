@@ -7,6 +7,17 @@ const RoomsSchema = require('../database/rooms.schema');
 const SubjectsSchema = require('../database/subjects.schema');
 
 router
+    .get('/rooms/create', accessMiddleware, async (request, response) => {
+        const user = request.session.passport.user;
+
+        try {
+            const subjects = await SubjectsSchema.find().lean();
+            response.render('createRoom', { layout: 'layout', subjects, user });
+        } catch (error) {
+            console.log(error);
+            response.send('Error');
+        }
+    })
     .get('/rooms/:id', accessMiddleware, async (request, response) => {
         const roomId = request.params.id;
         const user = request.session.passport.user;

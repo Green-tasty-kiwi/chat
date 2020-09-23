@@ -3,6 +3,7 @@
         <input class="form-control" name="search" type="search" placeholder="Search..." aria-label="Search">
         <button class="btn btn-outline-success " type="submit">Search</button>
     </form>
+
     {{#each rooms}}
     <a class="container" href="/rooms/{{_id}}">
         <div class='name'>
@@ -31,6 +32,25 @@
     .form-control {
         width: 280px !important;
         margin-right: 20px;
+    }
+
+    .btn-group {
+        width: 400px !important;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+
+    .dropdown-menu {
+        width: 400px !important;
+        margin-top: 10px;
+        padding: 10px;
+    }
+
+    .custom-select:active {
+        z-index: 100;
     }
 
     .btn-outline-success {

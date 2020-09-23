@@ -1,0 +1,42 @@
+<style>
+    body {
+        background-color: rgb(233, 233, 233);
+        margin: 0;
+    }
+
+    form {
+        width: 60%;
+        padding: 20px;
+        margin: 0 auto;
+    }
+
+    .kv-reqd {
+        color: red;
+    }
+</style>
+
+<form action="/api/rooms" method="POST">
+    <div class="form-group">
+        <label for="name">Name<span class="kv-reqd">*</span></label>
+        <input type="name" class="form-control" name="name" placeholder="Type here a name of the room..." required>
+    </div>
+    <div class="form-group">
+        <label for="description">Description<span class="kv-reqd"></span></label>
+        <input type="description" class="form-control" name="description">
+    </div>
+    <div class="form-group "> <label for="themes">Theme<span class="kv-reqd">*</span></label>
+        <select class="custom-select form-control" data-live-search="true" name="themes" required>
+            <option selected style="position:absolute; z-index:100">Choose one of the themes below...</option>
+            {{#each subjects}}
+            <option data-tokens="ketchup mustard" name="subjectName" style="position:absolute; z-index:100">{{name}}
+            </option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="form-group">
+        <hr>
+        <div class="text-right">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>

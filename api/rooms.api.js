@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const RoomsSchema = require('../database/rooms.schema');
 const MessagesSchema = require('../database/messages.schema');
+const SubjectsSchema = require('../database/subjects.schema');
 
 module.exports = router
     .get('/', async (request, response, next) => {
@@ -56,17 +57,16 @@ module.exports = router
     })
     .post('/', async (request, response, next) => {
         const body = request.body;
-        console.log(body);
+
+        const theme = await SubjectsSchema.findByName(body.themes);
         try {
             const room = await RoomsSchema.create({
                 name: body.name,
                 description: body.description,
-                subject: body.subjectId,
+                subject: theme,
             });
-            room = await RoomsSchema.findById(room._id).populate('subject', [
-                'name',
-            ]);
-            response.send(room);
+
+            response.redirect('/rooms/' + room._id);
         } catch (error) {
             console.log(error);
             response.send('Error');

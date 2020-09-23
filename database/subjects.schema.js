@@ -8,5 +8,7 @@ const subjectsSchema = new Schema({
         required: true,
     },
 });
-
+subjectsSchema.statics.findByName = function (name) {
+    return this.findOne({ name: name });
+};
 module.exports = model('themes', subjectsSchema);
