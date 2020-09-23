@@ -22,6 +22,7 @@ passport.use(
                         message: 'Incorrect email.',
                     });
                 }
+
                 if (!bcrypt.compareSync(password, user.password)) {
                     return done(null, false, {
                         message: 'Incorrect password.',

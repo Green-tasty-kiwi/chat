@@ -70,7 +70,14 @@ router
     })
     .get('/rooms', accessMiddleware, async (request, response) => {
         const user = request.session.passport.user;
-
+        const searchName = request.query.search;
+        if (searchName) {
+            const rooms = await RoomsSchema.find({
+                name: { $regex: new RegExp(searchName) },
+            }).lean();
+            response.render('rooms', { rooms, user });
+            return;
+        }
         try {
             const rooms = await RoomsSchema.find().lean();
             response.render('rooms', { rooms, user });
